@@ -1,57 +1,84 @@
 'use strict';
 /*jshint esversion: 6 */
 
+let isNumber = function(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n)
+};
 
-let money = 50000;
-let income = "Подработка";
-let addExpenses = "Ипотека, Транспорт, Одежда";
-let deposit = true;
-let mission = 400000;
-let period = 10;
+let money,
+    income = "Подработка",
+    addExpenses = prompt("Укажите ваши расходы за месяц через запятую"),
+    deposit = confirm("Есть ли у вас депозит в банке?"),
+    mission = 400000,
+    period = 10;
 
-console.log(typeof money);
-console.log(typeof income);
-console.log(typeof deposit);
-//console.log(addExpenses.length);
-//console.log("Период равен " + period + " месяцев");
-//console.log("Цель заработать " + mission + " рублей");
+//1) Переписать функцию start циклом do while
+
+    let start = function() {
+        do{
+            money = prompt("Ваш месячный доход?");
+        }
+        while(!isNumber(money));
+    };
+    
+    start();
+
+
+ let showTypeof = function(item){
+        console.log(typeof item);
+    };
+    showTypeof(money);
+    showTypeof(income);
+    showTypeof(deposit);
+
 console.log(addExpenses.toLowerCase().split(','));
 
+//2) Добавить проверку что введённые данные являются числом, которые мы получаем на вопрос 'Во сколько это обойдется?’ в функции  getExpensesMonth
 
-money = prompt("Ваш месячный доход?");
-addExpenses = prompt("Укажите ваши расходы за месяц через запятую");
-deposit = confirm("Есть ли у вас депозит в банке?");
-let expenses1 = prompt("Ваша обязательная статься расходов?");
-let amount1 = prompt("Во сколько вам это обходится?");
-let expenses2 = prompt("Введите другую обязательную статью расходов");
-let amount2 = prompt("Во сколько вам она обходится?");
+let expenses1, expenses2;
 
+let getExpensesMonth = function(){
+    let sum = 0;
 
-//console.log("Миссия будет достигнута за " + Math.ceil(mission / budgetMounth) + " месяцев(-а)");
+    for (let i = 0; i < 2; i++) {
 
+        if (i === 0) {
+            expenses1 = prompt("Ваша обязательная статься расходов?")
+        } else if (i === 1) {
+            expenses2 = prompt("Введите другую обязательную статью расходов")
+        }
 
+            sum += +prompt("Во сколько вам это обходится?");
+            while (!isNumber(sum)) {
+                sum = +prompt("Во сколько вам это обходится?");
+            }
+    }
 
+    console.log(sum);
+    return sum;
+}
 
+let expensesAmount = getExpensesMonth();
+console.log("Расходы за месяц = " + expensesAmount);
 
-function getExpensesMonth () {
-   return  parseInt(amount1) + parseInt(amount2);
+let getAccumulatedMonth = function(){
+    return money - expensesAmount;
 };
-
-console.log("Расходы за месяц = ", getExpensesMonth());
-
-function getAccumulatedMonth () {
-    return money - amount1 - amount2;
-};
-
 console.log("Ваш бюджет на день = ", getAccumulatedMonth());
 
 let accumulatedMonth = getAccumulatedMonth();
 
-function getTargetMonth() {
-    return mission / accumulatedMonth;
+//3) Если getTargetMonth возвращает нам отрицательное значение, то вместо “Цель будет достигнута” необходимо выводить “Цель не будет достигнута”
+
+let getTargetMonth = function(){
+    return Math.ceil(mission / accumulatedMonth);
 };
 
-console.log("Вы достигните цель через", getTargetMonth(), "Месяцев");
+    if (getTargetMonth() >= 0){
+        console.log("Вы достигните цель через", getTargetMonth(), "Месяцев");
+    } else 
+          console.log("Цель не будет достигнута");
+
 
 let budgetDay = accumulatedMonth / 30;
 console.log("Ваш дневной бюджет = " + Math.floor(budgetDay));
