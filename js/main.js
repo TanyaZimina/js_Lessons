@@ -7,12 +7,12 @@ let isNumber = function(n) {
 
 
 let money, 
-    start = function() {
-        do{
-            money = prompt("Ваш месячный доход?");
-        }
-        while(!isNumber(money));
-    };
+start = function() {
+    do{
+        money = prompt("Ваш месячный доход?");
+    }
+    while(!isNumber(money));
+};
 
 start();
 
@@ -48,12 +48,21 @@ let appData = {
             appData.expenses[expenses] = +amount;
         } 
 
+        // let sum = 0;
+        // for (let key in appData.expenses) {
+        //     sum = sum + appData.expenses[key];
+        // }
+        // //console.log(sum);
+        // appData.expensesMonth = sum;
+    },
+
+    getExpensesMonth: function(){
         let sum = 0;
         for (let key in appData.expenses) {
             sum = sum + appData.expenses[key];
         }
-        //console.log(sum);
         appData.expensesMonth = sum;
+        return appData.expensesMonth;
     },
 
     getBudget: function() {
@@ -79,6 +88,7 @@ let appData = {
 };
 
 appData.asking();
+appData.getExpensesMonth();
 appData.getBudget();
 appData.getTargetMonth();
 appData.getStatusIncome();
@@ -88,5 +98,6 @@ console.log("Цель будет достигнута", appData.getTargetMonth()
 console.log("Уровень дохода", appData.budget);
 
 console.log("Наша программа включает в себя данные:");
-console.log(Object.entries(appData));
-
+for(let key in appData){
+    console.log(key, appData[key])
+};
